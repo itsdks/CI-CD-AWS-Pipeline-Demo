@@ -7,7 +7,7 @@ export class APIEndpointStack extends cdk.Stack {
     constructor(scope: Construct, id: string, props?: cdk.StackProps) {
         super(scope, id, props);
 
-        const lambdaFn = new aws_lambda.Function(this, 'MyLambda', {
+        const lambdaFn = new aws_lambda.Function(this, 'MyDemoLambda', {
           functionName: 'MyDemoLambdaFunction',
           runtime: aws_lambda.Runtime.NODEJS_LATEST,
           handler: 'index.handler',
