@@ -3,6 +3,7 @@ import { Construct } from 'constructs';
 import { CodePipeline, CodePipelineSource, ShellStep } from 'aws-cdk-lib/pipelines';
 import { aws_lambda, aws_apigateway } from 'aws-cdk-lib';
 import path from 'path';
+import { MyPipelineAppStage } from './pipeline-app-stage';
 
 export class CiCdAwsPipelineDemoStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
@@ -18,16 +19,8 @@ export class CiCdAwsPipelineDemoStack extends cdk.Stack {
       })
     });
 
-    const lambdaFn = new aws_lambda.Function(this, 'MyLambda', {
-      functionName: 'MyLambdaFunction',
-      runtime: aws_lambda.Runtime.NODEJS_LATEST,
-      handler: 'index.handler',
-      code: aws_lambda.Code.fromAsset(path.join(__dirname, 'lambda'))
-    });
-
-    const endpoint = new aws_apigateway.LambdaRestApi(this, 'MyEndpoint', {
-      handler: lambdaFn,
-      restApiName: 'MyNewEndpoint'
-    });
+    const deployStage = pipeline.addStage(new MyPipelineAppStage(this, 'Deploy', {
+      env: { account: '571600838562', region: 'ap-south-1' }
+    }));
   }
 }
